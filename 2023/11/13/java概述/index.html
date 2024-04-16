@@ -11,7 +11,7 @@
   
   <title>
     
-      Archives 
+      Java概述 
       
       
       |
@@ -99,75 +99,155 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2024</span>
-          </h2>
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Java概述</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-11-13 10:44:29
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="JAVA学习笔记">
+                    #JAVA学习笔记
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="Java快速入门"><a href="#Java快速入门" class="headerlink" title="Java快速入门"></a>Java快速入门</h2><h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><ul>
+<li>需求说明<br>要求开发一个Hello.java程序，可以输出“Hello World”</li>
+<li>开发步骤<ol>
+<li>将java代码编写到拓展名为 “.java”的文件中</li>
+<li>通过javac命令对该java文件进行编译，生成.class文件</li>
+<li>通过java命令对生成的.class文件进行运行</li>
+</ol>
+</li>
+<li>代码实现<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这是java的快速入门</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对代码的相关说明</span></span><br><span class="line"><span class="comment">// 1. public class Hello 表示Hello 是一个类，是一个public（公有）的类</span></span><br><span class="line"><span class="comment">// 2. Hello&#123;&#125; 表示一个类的开始和结束</span></span><br><span class="line"><span class="comment">// 3. public static void main(String[] args)  表示一个主方法，即我们程序的入口</span></span><br><span class="line"><span class="comment">// 4. main()&#123;&#125; 表示一个主方法的开始和结束</span></span><br><span class="line"><span class="comment">// 5. System.out.println(&quot;hello world&quot;); 表示输出语句</span></span><br><span class="line"><span class="comment">// 6. “;” 表示语句结束</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意： 编码格式需要GBK</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span> &#123;</span><br><span class="line">  <span class="comment">// 编写一个主方法</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;hello world&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>java开发的注意事项和细节说明<ol>
+<li>java源文件以.java为拓展名。 源文件的基本组成部分是类（class），如本类中的Hello类</li>
+<li>Java应用程序的执行入口时main()方法，他有固定的书写格式<br>  public static void main(String[] args) {…}</li>
+<li>Java语言严格区分大小写</li>
+<li>Java方法由一条条语句构成，每个语句以“;”结束</li>
+<li>大括号都是成对出现的，缺一不可。</li>
+<li>一个源文件中最多只能有一个public类。其他类的个数不限</li>
+<li>如果源文件包含一个public类，则文件名必须按该类名命名</li>
+<li>一个源文件中最多只能有一个public类。其他类的个数不限，也可以将main方法写在非public类中，然后指定运行非public类，这样入口方法就是非public类中的main方法</li>
+</ol>
+</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/blog/2023/11/03/markdown%E7%9A%84%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-11-13 10:44:29
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/blog/tags/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="JAVA学习笔记">
+                        #JAVA学习笔记
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/blog/2024/04/16/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
         </div>
       
-      <div class="post-item" title="服务器配置">
-        <div class="time-m-d">04-16</div>
-        <div class="title">
-          <a href="/blog/2024/04/16/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/">
-            <span>服务器配置</span>
-          </a>
-        </div>
-      </div>
+    </div>
     
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2023</span>
-          </h2>
-        </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
       
-      <div class="post-item" title="Java概述">
-        <div class="time-m-d">11-13</div>
-        <div class="title">
-          <a href="/blog/2023/11/13/java%E6%A6%82%E8%BF%B0/">
-            <span>Java概述</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="markdown的基础用法">
-        <div class="time-m-d">11-03</div>
-        <div class="title">
-          <a href="/blog/2023/11/03/markdown%E7%9A%84%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95/">
-            <span>markdown的基础用法</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="scss语法学习">
-        <div class="time-m-d">11-03</div>
-        <div class="title">
-          <a href="/blog/2023/11/03/SCSS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/">
-            <span>scss语法学习</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Hello World">
-        <div class="time-m-d">11-03</div>
-        <div class="title">
-          <a href="/blog/2023/11/03/hello-world/">
-            <span>Hello World</span>
-          </a>
-        </div>
-      </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="toc-text">Java快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-text">案例</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
     
   </div>
-</div>
+
 
         
 <!-- <div class="footer">
