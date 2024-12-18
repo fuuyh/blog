@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <meta name="author" content="Fuyh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      node+FFmpeg解析视频 
+      
+      
+      |
+    
+     吾记
+  </title>
+
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/blog/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+    
+<link rel="stylesheet" href="/blog/css/figcaption/mac-block.css">
+
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/blog/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/blog/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/blog/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/blog/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/blog/images/avatar.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Fu YH</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/blog/">
+          <a href="/blog/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/archives/">
+          <a href="/blog/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/tags/">
+          <a href="/blog/tags/">Tags</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/blog/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">node+FFmpeg解析视频</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-12-18 14:28:25
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/nodejs/" title="nodejs">
+                    #nodejs
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="FFmpeg简介"><a href="#FFmpeg简介" class="headerlink" title="FFmpeg简介"></a>FFmpeg简介</h2><p>FFmpeg 是一个开源的多媒体框架，它能够对视频和音频进行录制、转换以及流处理。它支持大量的视频和音频格式，包括编解码器、解码器、复用器、解复用器、过滤器以及更多的组件。FFmpeg 的强大之处在于它的多功能性和高性能，它被广泛应用于视频转码、视频流处理、视频剪辑、添加水印等领域。</p>
+<p>FFmpeg 提供了一系列的命令行工具，如 ffmpeg、ffplay、ffprobe 等，这些工具可以用来处理多媒体文件。在 Node.js 中使用 FFmpeg，通常是通过调用命令行工具实现的，但这也可以通过一些 Node.js 的第三方库来简化，例如 fluent-ffmpeg。下面我们将介绍如何在 Node.js 中集成 FFmpeg，并展示一些基本的视频处理示例。</p>
+<h2 id="安装FFmpeg"><a href="#安装FFmpeg" class="headerlink" title="安装FFmpeg"></a>安装FFmpeg</h2><p>首先，确保你的系统上安装了 FFmpeg。你可以从 FFmpeg 的官方网站下载预编译的二进制文件，或者从源代码编译。确保 FFmpeg 的可执行文件位于系统的 PATH 中，这样 Node.js 脚本就可以调用它。</p>
+<h3 id="安装教程"><a href="#安装教程" class="headerlink" title="安装教程"></a>安装教程</h3><ul>
+<li>打开 <a target="_blank" rel="noopener" href="https://ffmpeg.org/download.html">Download FFmpeg官网</a>，选择安装包windows builds from gyan.dev<br>  <img src="/blog/./node-FFmpeg%E8%A7%A3%E6%9E%90%E8%A7%86%E9%A2%91/image.png" alt="alt text"></li>
+<li>下载对应版本的安装包，例如：ffmpeg-6.0-full_build-shared.zip<br>  <img src="/blog/./node-FFmpeg%E8%A7%A3%E6%9E%90%E8%A7%86%E9%A2%91/image1.png" alt="alt text"></li>
+<li>下载完成后，解压安装包</li>
+<li>将解压后的文件夹添加到环境变量中，例如：C:\Program Files\ffmpeg-6.0-full_build-shared</li>
+<li>验证是否安装成功，在命令行中输入ffmpeg，如果出现版本信息，则安装成功。</li>
+</ul>
+<h2 id="使用-fullt-ffmpeg-库"><a href="#使用-fullt-ffmpeg-库" class="headerlink" title="使用 fullt-ffmpeg 库"></a>使用 fullt-ffmpeg 库</h2><p>fluent-ffmpeg 是一个 Node.js 库，它提供了一个流式接口来控制 FFmpeg。这使得构建复杂的 FFmpeg 命令变得更加容易。</p>
+<p>首先，你需要安装 fluent-ffmpeg：<code>npm install fluent-ffmpeg</code></p>
+<p>然后，你可以使用以下代码来转码视频：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">WebSocket</span> = <span class="built_in">require</span>(<span class="string">&#x27;ws&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> ffmpeg = <span class="built_in">require</span>(<span class="string">&#x27;fluent-ffmpeg&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">&#x27;url&#x27;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> ffmpegStream = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">let</span> ffmpegCommandInstance = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = http.<span class="title function_">createServer</span>();</span><br><span class="line"><span class="keyword">const</span> wss = <span class="keyword">new</span> <span class="title class_">WebSocket</span>.<span class="title class_">Server</span>(&#123; <span class="attr">noServer</span>: <span class="literal">true</span> &#125;);</span><br><span class="line"></span><br><span class="line">server.<span class="title function_">on</span>(<span class="string">&#x27;upgrade&#x27;</span>, <span class="keyword">function</span> <span class="title function_">upgrade</span>(<span class="params">request, socket, head</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> parsedUrl = url.<span class="title function_">parse</span>(request.<span class="property">url</span>, <span class="literal">true</span>);</span><br><span class="line">  <span class="keyword">const</span> query = parsedUrl.<span class="property">query</span>; <span class="comment">// 这里是查询参数对象</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Received query parameters:&#x27;</span>, query);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 检查 rtsp 参数是否传递并有效</span></span><br><span class="line">  <span class="keyword">let</span> rtspUrl = query &amp;&amp; query.<span class="property">rtsp</span> ? <span class="built_in">decodeURIComponent</span>(query.<span class="property">rtsp</span>) : <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!rtspUrl || rtspUrl.<span class="title function_">trim</span>() === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;RTSP URL not provided or invalid.&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向客户端发送错误信息并关闭连接</span></span><br><span class="line">    socket.<span class="title function_">write</span>(<span class="string">&#x27;HTTP/1.1 400 Bad Request\r\n\r\n&#123;&quot;error&quot;: &quot;RTSP URL is required&quot;&#125;&#x27;</span>);</span><br><span class="line">    socket.<span class="title function_">destroy</span>();</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 接受 WebSocket 升级请求</span></span><br><span class="line">  wss.<span class="title function_">handleUpgrade</span>(request, socket, head, <span class="keyword">function</span> <span class="title function_">done</span>(<span class="params">ws</span>) &#123;</span><br><span class="line">    wss.<span class="title function_">emit</span>(<span class="string">&#x27;connection&#x27;</span>, ws, request);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">wss.<span class="title function_">on</span>(<span class="string">&#x27;connection&#x27;</span>, <span class="function">(<span class="params">ws, req</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Client connected with query:&#x27;</span>, url.<span class="title function_">parse</span>(req.<span class="property">url</span>, <span class="literal">true</span>).<span class="property">query</span>.<span class="property">rtsp</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> rtspUrl = url.<span class="title function_">parse</span>(req.<span class="property">url</span>, <span class="literal">true</span>).<span class="property">query</span>.<span class="property">rtsp</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果没有传递 rtspUrl 参数，则关闭连接,返回消息</span></span><br><span class="line">  <span class="keyword">if</span> (!rtspUrl || rtspUrl.<span class="title function_">trim</span>() === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">    ws.<span class="title function_">send</span>(<span class="string">&#x27;未传递 rtspUrl 参数，已关闭连接&#x27;</span>);</span><br><span class="line">    ws.<span class="title function_">close</span>();</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果还没有FFmpeg流，则启动它</span></span><br><span class="line">  <span class="keyword">if</span> (!ffmpegStream) &#123;</span><br><span class="line">    ffmpegCommandInstance = <span class="title function_">ffmpeg</span>(rtspUrl)</span><br><span class="line">      .<span class="title function_">addInputOption</span>(<span class="string">&#x27;-rtsp_transport&#x27;</span>, <span class="string">&#x27;tcp&#x27;</span>) <span class="comment">// 使用 TCP 传输 RTSP</span></span><br><span class="line">      .<span class="title function_">addInputOption</span>(<span class="string">&#x27;-fflags&#x27;</span>, <span class="string">&#x27;nobuffer&#x27;</span>)   <span class="comment">// 尽量降低缓冲</span></span><br><span class="line">      .<span class="title function_">addInputOption</span>(<span class="string">&#x27;-analyzeduration&#x27;</span>, <span class="string">&#x27;0&#x27;</span>) <span class="comment">// 减少分析时间</span></span><br><span class="line">      .<span class="title function_">addInputOption</span>(<span class="string">&#x27;-probesize&#x27;</span>, <span class="string">&#x27;32&#x27;</span>)</span><br><span class="line">      .<span class="title function_">videoCodec</span>(<span class="string">&#x27;libx264&#x27;</span>)                   <span class="comment">// 转码为 H.264</span></span><br><span class="line">      .<span class="title function_">outputOptions</span>(<span class="string">&#x27;-preset&#x27;</span>, <span class="string">&#x27;ultrafast&#x27;</span>)   <span class="comment">// 快速编码模式</span></span><br><span class="line">      .<span class="title function_">outputOptions</span>(<span class="string">&#x27;-tune&#x27;</span>, <span class="string">&#x27;zerolatency&#x27;</span>)   <span class="comment">// 实时优化</span></span><br><span class="line">      .<span class="title function_">outputOptions</span>(<span class="string">&#x27;-g&#x27;</span>, <span class="string">&#x27;25&#x27;</span>)               <span class="comment">// 关键帧间隔（GOP）</span></span><br><span class="line">      .<span class="title function_">outputOptions</span>(<span class="string">&#x27;-f&#x27;</span>, <span class="string">&#x27;flv&#x27;</span>)              <span class="comment">// 输出 FLV 格式</span></span><br><span class="line">      .<span class="title function_">noAudio</span>()                               <span class="comment">// 不需要音频</span></span><br><span class="line">      .<span class="title function_">on</span>(<span class="string">&#x27;start&#x27;</span>, <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;FFmpeg started&#x27;</span>))</span><br><span class="line">      .<span class="title function_">on</span>(<span class="string">&#x27;error&#x27;</span>, <span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;FFmpeg error:&#x27;</span>, err.<span class="property">message</span>);</span><br><span class="line">        ws.<span class="title function_">close</span>();</span><br><span class="line">      &#125;)</span><br><span class="line">      .<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;FFmpeg process ended&#x27;</span>);</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">    ffmpegStream = ffmpegCommandInstance.<span class="title function_">pipe</span>();</span><br><span class="line"></span><br><span class="line">    ffmpegStream.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 广播数据给所有已连接的客户端</span></span><br><span class="line">      wss.<span class="property">clients</span>.<span class="title function_">forEach</span>(<span class="function"><span class="params">client</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (client.<span class="property">readyState</span> === <span class="title class_">WebSocket</span>.<span class="property">OPEN</span>) &#123;</span><br><span class="line">          client.<span class="title function_">send</span>(chunk);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 客户端断开时的处理</span></span><br><span class="line">  ws.<span class="title function_">on</span>(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 当最后一个客户端断开时，结束 FFmpeg 进程</span></span><br><span class="line">    <span class="keyword">if</span> (wss.<span class="property">clients</span>.<span class="property">size</span> === <span class="number">0</span> &amp;&amp; ffmpegCommandInstance) &#123;</span><br><span class="line">      ffmpegCommandInstance.<span class="title function_">kill</span>(<span class="string">&#x27;SIGKILL&#x27;</span>);</span><br><span class="line">      ffmpegStream = <span class="literal">null</span>;</span><br><span class="line">      ffmpegCommandInstance = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动 HTTP 服务器并监听端口</span></span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">8080</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebSocket server started on ws://localhost:8080&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="前台播放"><a href="#前台播放" class="headerlink" title="前台播放"></a>前台播放</h2><ul>
+<li>安装 flv.js  <code>npm install flv.js</code></li>
+<li>示例<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;video ref=&quot;videoPlayer&quot; class=&quot;video-js vjs-default-skin&quot; controls&gt;&lt;/video&gt;</span><br><span class="line">    &lt;button @click=&quot;startStream&quot;&gt;播放视频&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">import &#123; ref &#125; from &quot;vue&quot;;</span><br><span class="line">import flvjs from &quot;flv.js&quot;;</span><br><span class="line"></span><br><span class="line">const videoPlayer = ref(null);</span><br><span class="line">let flvPlayer = null;</span><br><span class="line"></span><br><span class="line">const startStream = () =&gt; &#123;</span><br><span class="line">  if (!flvjs.isSupported()) &#123;</span><br><span class="line">    console.error(&quot;FLV.js is not supported in this browser&quot;);</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 销毁之前的播放器实例</span><br><span class="line">  if (flvPlayer) &#123;</span><br><span class="line">    flvPlayer.unload();</span><br><span class="line">    flvPlayer.detachMediaElement();</span><br><span class="line">    flvPlayer.destroy();</span><br><span class="line">    flvPlayer = null;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 构建带有查询参数的 WebSocket URL</span><br><span class="line">  const params = new URLSearchParams(&#123;</span><br><span class="line">    rtsp: &quot;rtsp:ip@admin:123456&quot;</span><br><span class="line">  &#125;).toString();</span><br><span class="line"></span><br><span class="line">  const wsUrl = `ws://localhost:8080`;</span><br><span class="line"></span><br><span class="line">  // 创建新的 FLV 播放器实例</span><br><span class="line">  flvPlayer = flvjs.createPlayer(&#123;</span><br><span class="line">    type: &quot;flv&quot;,</span><br><span class="line">    url: wsUrl, // WebSocket 地址</span><br><span class="line">    isLive: true,</span><br><span class="line">    hasAudio: false,</span><br><span class="line">    hasVideo: true,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  flvPlayer.attachMediaElement(videoPlayer.value);</span><br><span class="line">  flvPlayer.load();</span><br><span class="line">  flvPlayer.play();</span><br><span class="line">&#125;;</span><br><span class="line">// 监听窗口关闭事件，销毁播放器实例</span><br><span class="line">window.addEventListener(&quot;beforeunload&quot;, () =&gt; &#123;</span><br><span class="line">  if (flvPlayer) &#123;</span><br><span class="line">    flvPlayer.unload();</span><br><span class="line">    flvPlayer.detachMediaElement();</span><br><span class="line">    flvPlayer.destroy();</span><br><span class="line">    flvPlayer = null;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">video &#123;</span><br><span class="line">  width: 100%;</span><br><span class="line">  height: auto;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/blog/2024/08/01/centos%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-12-18 14:28:25
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/blog/tags/nodejs/" title="nodejs">
+                        #nodejs
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#FFmpeg%E7%AE%80%E4%BB%8B"><span class="toc-text">FFmpeg简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85FFmpeg"><span class="toc-text">安装FFmpeg</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B"><span class="toc-text">安装教程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-fullt-ffmpeg-%E5%BA%93"><span class="toc-text">使用 fullt-ffmpeg 库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%8F%B0%E6%92%AD%E6%94%BE"><span class="toc-text">前台播放</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<!-- <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/fuuyh">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div> -->
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/blog/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/blog/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/blog/js/colorscheme.js"></script>
+
+
+
+
+
+        
+
+      </div>
+    </div>
+  </body>
+</html>
