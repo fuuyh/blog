@@ -11,7 +11,7 @@
   
   <title>
     
-      Tag 
+      nodejs打包成桌面程序exe 
       
       
       |
@@ -133,21 +133,106 @@
 
 
 
-  <!-- 标签页 url形式：https://yoursite/tags/ -->
-  <div class="container tag-index">
-    <div>
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">JAVA学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/nodejs/" rel="tag">nodejs</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E6%95%99%E7%A8%8B/" rel="tag">教程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag">服务器</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E8%84%9A%E6%9C%AC/" rel="tag">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%97%AE%E9%A2%98/" rel="tag">问题</a><span class="tag-list-count">2</span></li></ul>
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">nodejs打包成桌面程序exe</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-12-29 10:04:36
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/nodejs/" title="nodejs">
+                    #nodejs
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h3 id="安装pkg"><a href="#安装pkg" class="headerlink" title="安装pkg"></a>安装pkg</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev pkg</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建nodejs服务"><a href="#创建nodejs服务" class="headerlink" title="创建nodejs服务"></a>创建nodejs服务</h3><p>此处默认已经有了nodejs服务，入口文件是app.js</p>
+<h3 id="配置pkg"><a href="#配置pkg" class="headerlink" title="配置pkg"></a>配置pkg</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;app-name&quot;</span><span class="punctuation">,</span>  </span><br><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;nodemon app.js&quot;</span><span class="punctuation">,</span>   <span class="comment">// 开发环境运行</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pkg . --out-path dist&quot;</span><span class="punctuation">,</span>  <span class="comment">// 打包所有平台</span></span><br><span class="line">    <span class="attr">&quot;build:win&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pkg . --targets node16-win-x64 --out-path dist&quot;</span><span class="punctuation">,</span>  <span class="comment">// 打包windows应用程序</span></span><br><span class="line">    <span class="attr">&quot;build:linux&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pkg . --targets node16-linux-x64 --out-path dist&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build:mac&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pkg . --targets node16-macos-x64 --out-path dist&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;pkg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^5.8.1&quot;</span>  <span class="comment">// 依赖包</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;pkg&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// # 脚本文件</span></span><br><span class="line">    <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;controller/**/*.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;middleware/**/*.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;model/**/*.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;routes/**/*.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;config/**/*.js&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"><span class="comment">// #静态文件</span></span><br><span class="line">    <span class="attr">&quot;assets&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;public/**/*&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;uploads/**/*&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"><span class="comment">// #输出目标</span></span><br><span class="line">    <span class="attr">&quot;targets&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;node16-win-x64&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;node16-linux-x64&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;node16-macos-x64&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"><span class="comment">// #输出路径</span></span><br><span class="line">    <span class="attr">&quot;outputPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;dist&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="打包运行"><a href="#打包运行" class="headerlink" title="打包运行"></a>打包运行</h3><p>使用命令直接运行 <code>npm run build:win</code>等待打包完成，完成后会创建dist目录，并且出现一个<code>app-name.exe</code>文件，就是已经打包完成了</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/blog/2024/12/18/jeecgboot%E4%B8%80%E9%94%AE%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-12-29 10:04:36
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/blog/tags/nodejs/" title="nodejs">
+                        #nodejs
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/blog/2024/12/29/webpack%E6%89%93%E5%8C%85nodejs%E6%9C%8D%E5%8A%A1/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85pkg"><span class="toc-text">安装pkg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAnodejs%E6%9C%8D%E5%8A%A1"><span class="toc-text">创建nodejs服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEpkg"><span class="toc-text">配置pkg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E8%BF%90%E8%A1%8C"><span class="toc-text">打包运行</span></a></li></ol>
+      
     </div>
   </div>
-  
 
   
+<script src="/blog/js/catalog.js"></script>
 
-  
 
-  
 
-  
+
+    
+  </div>
+
 
         
 <!-- <div class="footer">

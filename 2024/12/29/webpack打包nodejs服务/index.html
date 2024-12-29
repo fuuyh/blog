@@ -11,7 +11,7 @@
   
   <title>
     
-      archive_a: 2023 
+      webpack打包nodejs服务 
       
       
       |
@@ -99,138 +99,135 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2024</span>
-          </h2>
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">webpack打包nodejs服务</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-12-29 10:08:22
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/nodejs/" title="nodejs">
+                    #nodejs
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h3 id="安装webpack"><a href="#安装webpack" class="headerlink" title="安装webpack"></a>安装webpack</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack webpack-cli --save-dev</span><br><span class="line">npm install webpack-node-externals --save-dev</span><br></pre></td></tr></table></figure>
+<h3 id="配置webpack-config-js"><a href="#配置webpack-config-js" class="headerlink" title="配置webpack.config.js"></a>配置webpack.config.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> nodeExternals = <span class="built_in">require</span>(<span class="string">&#x27;webpack-node-externals&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">target</span>: <span class="string">&#x27;node&#x27;</span>,</span><br><span class="line">  <span class="attr">mode</span>: <span class="string">&#x27;production&#x27;</span>,</span><br><span class="line">  <span class="attr">entry</span>: <span class="string">&#x27;./app.js&#x27;</span>,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;server.js&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">externals</span>: [<span class="title function_">nodeExternals</span>()],</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        <span class="attr">exclude</span>: <span class="regexp">/node_modules/</span>,</span><br><span class="line">        <span class="attr">use</span>: &#123;</span><br><span class="line">          <span class="attr">loader</span>: <span class="string">&#x27;babel-loader&#x27;</span>,</span><br><span class="line">          <span class="attr">options</span>: &#123;</span><br><span class="line">            <span class="attr">presets</span>: [<span class="string">&#x27;@babel/preset-env&#x27;</span>]</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;; </span><br></pre></td></tr></table></figure>
+
+<h3 id="配置webpack打包命令"><a href="#配置webpack打包命令" class="headerlink" title="配置webpack打包命令"></a>配置webpack打包命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;build&quot;</span>: <span class="string">&quot;webpack --config webpack.config.js&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="打包服务"><a href="#打包服务" class="headerlink" title="打包服务"></a>打包服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行打包后的服务"><a href="#运行打包后的服务" class="headerlink" title="运行打包后的服务"></a>运行打包后的服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node dist/server.js</span><br><span class="line"><span class="comment"># 在命令行中运行node dist/server.js即可启动打包后的服务。</span></span><br></pre></td></tr></table></figure>
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/blog/2024/12/29/nodejs%E6%89%93%E5%8C%85%E6%88%90%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8Fexe/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-12-29 10:08:22
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/blog/tags/nodejs/" title="nodejs">
+                        #nodejs
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
       
-      <div class="post-item" title="webpack打包nodejs服务">
-        <div class="time-m-d">12-29</div>
-        <div class="title">
-          <a href="/blog/2024/12/29/webpack%E6%89%93%E5%8C%85nodejs%E6%9C%8D%E5%8A%A1/">
-            <span>webpack打包nodejs服务</span>
-          </a>
-        </div>
-      </div>
+    </div>
     
-      <div class="post-item" title="nodejs打包成桌面程序exe">
-        <div class="time-m-d">12-29</div>
-        <div class="title">
-          <a href="/blog/2024/12/29/nodejs%E6%89%93%E5%8C%85%E6%88%90%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8Fexe/">
-            <span>nodejs打包成桌面程序exe</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="jeecgboot一键启动脚本">
-        <div class="time-m-d">12-18</div>
-        <div class="title">
-          <a href="/blog/2024/12/18/jeecgboot%E4%B8%80%E9%94%AE%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC/">
-            <span>jeecgboot一键启动脚本</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="node+FFmpeg解析视频">
-        <div class="time-m-d">12-18</div>
-        <div class="title">
-          <a href="/blog/2024/12/18/node-FFmpeg%E8%A7%A3%E6%9E%90%E8%A7%86%E9%A2%91/">
-            <span>node+FFmpeg解析视频</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="centos云服务器开发环境配置">
-        <div class="time-m-d">08-01</div>
-        <div class="title">
-          <a href="/blog/2024/08/01/centos%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
-            <span>centos云服务器开发环境配置</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="修改node_modules源码 使用patch-package打补丁">
-        <div class="time-m-d">08-01</div>
-        <div class="title">
-          <a href="/blog/2024/08/01/%E4%BF%AE%E6%94%B9node-modules%E6%BA%90%E7%A0%81-%E4%BD%BF%E7%94%A8patch-package%E6%89%93%E8%A1%A5%E4%B8%81/">
-            <span>修改node_modules源码 使用patch-package打补丁</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="js中数字计算时丢失精度问题解决">
-        <div class="time-m-d">07-22</div>
-        <div class="title">
-          <a href="/blog/2024/07/22/js%E4%B8%AD%E6%95%B0%E5%AD%97%E8%AE%A1%E7%AE%97%E6%97%B6%E4%B8%A2%E5%A4%B1%E7%B2%BE%E5%BA%A6%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">
-            <span>js中数字计算时丢失精度问题解决</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="服务器配置">
-        <div class="time-m-d">04-16</div>
-        <div class="title">
-          <a href="/blog/2024/04/16/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/">
-            <span>服务器配置</span>
-          </a>
-        </div>
-      </div>
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2023</span>
-          </h2>
-        </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
       
-      <div class="post-item" title="Java概述">
-        <div class="time-m-d">11-13</div>
-        <div class="title">
-          <a href="/blog/2023/11/13/java%E6%A6%82%E8%BF%B0/">
-            <span>Java概述</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="markdown的基础用法">
-        <div class="time-m-d">11-03</div>
-        <div class="title">
-          <a href="/blog/2023/11/03/markdown%E7%9A%84%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95/">
-            <span>markdown的基础用法</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="scss语法学习">
-        <div class="time-m-d">11-03</div>
-        <div class="title">
-          <a href="/blog/2023/11/03/SCSS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/">
-            <span>scss语法学习</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Hello World">
-        <div class="time-m-d">11-03</div>
-        <div class="title">
-          <a href="/blog/2023/11/03/hello-world/">
-            <span>Hello World</span>
-          </a>
-        </div>
-      </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85webpack"><span class="toc-text">安装webpack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEwebpack-config-js"><span class="toc-text">配置webpack.config.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEwebpack%E6%89%93%E5%8C%85%E5%91%BD%E4%BB%A4"><span class="toc-text">配置webpack打包命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E6%9C%8D%E5%8A%A1"><span class="toc-text">打包服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%89%93%E5%8C%85%E5%90%8E%E7%9A%84%E6%9C%8D%E5%8A%A1"><span class="toc-text">运行打包后的服务</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
     
   </div>
-</div>
+
 
         
 <!-- <div class="footer">
